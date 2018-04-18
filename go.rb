@@ -1,9 +1,7 @@
 team_members = [
-  'thilgen',
-  'tmcinerney',
-  'alduethadyn',
-  'jwsf',
-  'mariozaizar'
+  'user1',
+  'user2',
+  'user3'
 ]
 
 date_range = "2016-04-01..2016-09-30"

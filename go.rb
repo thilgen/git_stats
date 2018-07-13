@@ -285,3 +285,20 @@ puts "PR with the largest description:"
 puts "  Desc Length           : #{pr_with_the_longest_body['body_length']}"
 puts "  Team Member           : #{pr_with_the_longest_body['team_member']}"
 puts "  PR                    : #{pr_with_the_longest_body['url']}"
+
+
+def find_member_average_pr_length(team_member)
+  puts team_member
+  uri = "https://api.github.com/search/issues?q=org:#{org_name}+type:pr+author:#{team_member}+created:#{date_range}+is:merged"
+  total_pr_duration = 0
+  result = HTTParty.get(uri, :basic_auth => auth)
+  num_prs_closed = result['total_count']
+  result['items'].each do |pr|
+    pr_created_at = pr['created_at']
+    pr_closed_at = pr['closed_at']
+    duration = TimeDifference.between(DateTime.parse(pr_closed_at), DateTime.parse(pr_created_at)).in_seconds
+    total_pr_duration += duration
+    puts "\t#{pr['state']}\t#{pr['url']}\t#{duration}\t#{get_duration_str(duration)}"
+  end
+  puts "Average: #{total_pr_duration}\t#{get_duration_str(total_pr_duration / num_prs_closed)}"
+end
